@@ -1,17 +1,42 @@
-import momngoose from 'mongoose';
+import path from 'path';
+import express from 'express';
+import multer from 'multer';
 
-const connectDB = async () => {
-    try {
-        const conn = await momngoose.connect(`${process.env.MONGO_URI}`, {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true
-        });
-        console.log(`MongoDB Connected: ${conn.connection.host}`.green.bold.underline.inverse);
-    } catch (error) {
-        console.log(`Error: ${error.message}`.red.underline.bold);
-        process.exit(1);
+const router = express.Router();
+
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename(req, file, cb) {
+        cb(
+            null,
+            `${file.filename}-${Date.now()}${path.extname(file.originalname)}`
+        );
+    },
+});
+
+function checkFileType(file, cb) {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+
+    if (extname && mimetype) {
+        cb(null, true);
+    } else {
+        cb('Error: Images Only!');
     }
-};
+}
 
-export default connectDB;
+const upload = multer({
+    storage,
+    fileFilter: function (req, file, cb) {
+        checkFileType(file, cb);
+    },
+});
+
+router.post('/', upload.array('images', 5), (req, res) => {
+    res.send(`/${req.files[0].path}`);
+});
+
+export default router;
