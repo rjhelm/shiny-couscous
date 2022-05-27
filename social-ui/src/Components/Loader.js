@@ -8,17 +8,17 @@ const Loader = ({ small, large, ind }) => {
             {small ? (
                 <Spin
                     size="small"
-                    indicator={ind && <LoadingOutline style={{ fontSize: 24}} spin />}
+                    indicator={ind && <LoadingOutlined style={{ fontSize: 24}} spin />}
                 />
             ) : large ? (
                 <Spin
                     tip="Loading..."
                     size="large"
-                    indicator={ind && <LoadingOutline style={{ fontSize:  24 }} spin />}
+                    indicator={ind && <LoadingOutlined style={{ fontSize:  24 }} spin />}
                 />
             ) : (
                 <Spin
-                    indicator={ind && <LoadingOutline style={{ fontSize: 24 }} spin />}
+                    indicator={ind && <LoadingOutlined style={{ fontSize: 24 }} spin />}
                 />
             )}
         </div>
