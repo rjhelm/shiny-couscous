@@ -448,7 +448,7 @@ const Profile = ({ username }) => {
                 </Modal>
                 <Modal
                     title="Update Cover"
-                    onCancel={() => setCovermodal(false)}
+                    onCancel={() => setCoverModal(false)}
                     visible={coverModal}
                     footer={null}
                 >
